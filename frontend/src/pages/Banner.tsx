@@ -1,12 +1,12 @@
 
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import CountdownCard from '../components/CountdownCard';
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const Banner = () => {
   const { id } = useParams(); 
-  const [endTime, setEndTime] = useState(null);
+  const [endTime, setEndTime] = useState<number>(0);
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,

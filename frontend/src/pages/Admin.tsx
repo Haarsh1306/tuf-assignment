@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import axios from 'axios';
 import Table from '../components/Table';
 import Loader from '../components/Loader';
@@ -18,7 +18,7 @@ const Admin = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('${BASE_URL}/api/banners'); 
+        const response = await axios.get(`${BASE_URL}/api/banners`); 
         console.log(response.data);
         setItems(response.data);
       } catch (error) {
@@ -38,8 +38,8 @@ const Admin = () => {
   };
 
   const handleUpdate = (id: number) => {
-  
-  };
+    console.log(id);
+  };  
 
   return (
     <div className="min-h-screen bg-black flex justify-center items-center">

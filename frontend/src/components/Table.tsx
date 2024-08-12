@@ -1,6 +1,4 @@
 
-import React from 'react';
-
 interface TableItem {
   id: number;
   description: string;
