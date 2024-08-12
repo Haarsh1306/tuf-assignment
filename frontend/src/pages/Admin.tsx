@@ -7,7 +7,7 @@ interface PortalItem {
   id: number;
   description: string;
   endTime: string;
-  isActive: boolean;
+  visible: boolean;
   link: string;
 }
 
@@ -31,11 +31,14 @@ const Admin = () => {
     fetchData();
   }, []);
 
-  const toggleActive = async (id: number) => {
-    const response = await axios.get(`${BASE_URL}/api/banners`); 
-    setItems(items.map(item => 
-      item.id === id ? { ...item, isActive: !item.isActive } : item
-    ));
+  const toggleActive = async (id: number, visible: boolean) => {
+    const response = await axios.post(`${BASE_URL}/api/banners/${id}/toggle-visibility`, {visible}); 
+    if(response.data.message){
+      setItems(items.map(item => 
+        item.id === id ? { ...item, visible: !item.visible } : item
+      ));
+    }
+    
   };
 
   const handleUpdate = (id: number) => {
