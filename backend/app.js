@@ -3,7 +3,7 @@ const uuidv4 = require("uuid").v4;
 const express = require("express");
 const app = express();
 const pool = require("./db/db");
-app.use(express.json());    
+app.use(express.json());
 
 const BASE_URL = "http://localhost:3000";
 
@@ -14,9 +14,10 @@ app.post("/api/banners", async (req, res) => {
     const link = `${BASE_URL}/banners/${id}`;
     const createdAt = new Date();
     console.log(process.env.DB_HOST);
-    const [result] = await pool.execute(
+
+    const [result] = await pool.query(
       "INSERT INTO banner (id, description, visible, endTime, link, createdAt) VALUES (?, ?, ?, ?, ?, ?)",
-      [id, description, visible, endTime, link, createdAt]
+      [id, description, visible, new Date(endTime), link, createdAt],
     );
     console.log(result);
 
@@ -39,7 +40,7 @@ app.put("/api/banners/:id", async (req, res) => {
 
     const [result] = await pool.execute(
       "UPDATE banner SET description = ?, visible = ?, endTime = ?, updatedAt = ? WHERE id = ?",
-      [description, visible, endTime, updatedAt, id]
+      [description, visible, endTime, updatedAt, id],
     );
 
     if (result.affectedRows === 0) {
@@ -51,6 +52,59 @@ app.put("/api/banners/:id", async (req, res) => {
       link: `${BASE_URL}/banners/${id}`,
     });
   } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.get("/api/banners/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [rows] = await pool.query("SELECT * FROM banner WHERE id = ?", [id]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Banner not found" });
+    }
+
+    res.json(rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.patch("/api/banners/:id/toggle-visibility", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedAt = new Date();
+
+    const [currentStatus] = await pool.query(
+      "SELECT visible FROM banner WHERE id = ?",
+      [id],
+    );
+
+    if (currentStatus.length === 0) {
+      return res.status(404).json({ error: "Banner not found" });
+    }
+
+    const newVisible = !currentStatus[0].visible;
+
+    // Update the visible status
+    const [result] = await pool.execute(
+      "UPDATE banner SET visible = ?, updatedAt = ? WHERE id = ?",
+      [newVisible, updatedAt, id],
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Banner not found" });
+    }
+
+    res.json({
+      message: "Banner visibility toggled successfully",
+      visible: newVisible,
+      link: `${BASE_URL}/banners/${id}`,
+    });
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
