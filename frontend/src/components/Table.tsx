@@ -92,7 +92,7 @@ const Table = ({ items, onToggleActive, onUpdate }: TableProps) => {
                     />
                     <div
                       className={`block w-10 h-6 rounded-full ${
-                        item.visible ? "bg-green-400" : "bg-gray-400"
+                        item.visible ? "bg-green-400" : "bg-red-400"
                       }`}
                     ></div>
                     <div
