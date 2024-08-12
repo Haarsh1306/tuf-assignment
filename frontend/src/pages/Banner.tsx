@@ -17,7 +17,6 @@ const Banner = () => {
     seconds: 0,
   });
 
-
   useEffect(() => {
     console.log(id);
     const fetchEndTime = async () => {
@@ -60,19 +59,19 @@ const Banner = () => {
     return () => clearInterval(interval);
   }, [endTime]);
 
-  if(isLoading){
-    return(
+  if (isLoading) {
+    return (
       <div className="h-screen bg-black flex items-center justify-center">
         <Loader size="lg" />
       </div>
-    )
+    );
   }
   return (
     <div className="h-screen bg-black flex items-center justify-center">
       {!isActive ? (
         <h2 className="text-3xl font-bold text-white mb-6 text-center">
-        Banner is not active
-      </h2>
+          Banner is not active
+        </h2>
       ) : (
         <div className="bg-red-900 p-8 rounded-xl shadow-2xl flex flex-col justify-center items-center">
           <h2 className="text-3xl font-bold text-white mb-6 text-center">
