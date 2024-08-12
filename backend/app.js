@@ -26,10 +26,8 @@ app.post("/api/create-banner", async (req, res) => {
     const { description, visible, endTime } = req.body;
     const id = uuidv4();
     const createdAt = new Date();
-    console.log(process.env.DB_HOST);
-
     const [result] = await pool.query(
-      "INSERT INTO banner (id, description, visible, endTime, createdAt) VALUES (?, ?, ?, ?, ?, ?)",
+      "INSERT INTO banner (id, description, visible, endTime, createdAt) VALUES (?, ?, ?, ?, ?)",
       [id, description, visible, new Date(endTime), createdAt],
     );
     console.log(result);
