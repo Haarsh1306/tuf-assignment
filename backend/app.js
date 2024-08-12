@@ -83,25 +83,15 @@ app.get("/api/banner/:id", async (req, res) => {
   }
 });
 
-app.patch("/api/banners/:id/toggle-visibility", async (req, res) => {
+app.post("/api/banners/:id/toggle-visibility", async (req, res) => {
   try {
     const { id } = req.params;
     const updatedAt = new Date();
-
-    const [currentStatus] = await pool.query(
-      "SELECT visible FROM banner WHERE id = ?",
-      [id],
-    );
-
-    if (currentStatus.length === 0) {
-      return res.status(404).json({ error: "Banner not found" });
-    }
-
-    const newVisible = !currentStatus[0].visible;
+    const {visible} = req.body;
 
     const [result] = await pool.execute(
       "UPDATE banner SET visible = ?, updatedAt = ? WHERE id = ?",
-      [newVisible, updatedAt, id],
+      [visible, updatedAt, id],
     );
 
     if (result.affectedRows === 0) {
@@ -109,8 +99,8 @@ app.patch("/api/banners/:id/toggle-visibility", async (req, res) => {
     }
 
     res.json({
-      message: "Banner visibility toggled successfully",
-      visible: newVisible
+      message: "Banner visibility changed successfully",
+      visible
     });
   } catch (error) {
     console.error(error);
