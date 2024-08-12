@@ -61,12 +61,12 @@ const Table = ({ items, onToggleActive, onUpdate }: TableProps) => {
             >
               Link
             </th>
-            <th
+            {/* <th
               scope="col"
               className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
               Actions
-            </th>
+            </th> */}
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -114,14 +114,14 @@ const Table = ({ items, onToggleActive, onUpdate }: TableProps) => {
                   View Banner
                 </a>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+              {/* <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                 <button
                   onClick={() => onUpdate(item.id)}
                   className="text-indigo-600 hover:text-indigo-900 bg-indigo-100 hover:bg-indigo-200 px-3 py-1 rounded-md transition duration-300"
                 >
                   Update
                 </button>
-              </td>
+              </td> */}
             </tr>
           ))}
         </tbody>
