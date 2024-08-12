@@ -76,7 +76,7 @@ app.get("/api/banner/:id", async (req, res) => {
       return res.status(404).json({ error: "Banner not found" });
     }
 
-    res.json(rows[0]);
+    res.status(200).json(rows[0]);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
