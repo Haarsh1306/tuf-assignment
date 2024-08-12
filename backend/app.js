@@ -2,7 +2,7 @@ require("dotenv").config();
 const uuidv4 = require("uuid").v4;
 const express = require("express");
 const app = express();
-const cors = require('cors');
+const cors = require("cors");
 const pool = require("./db/db");
 app.use(express.json());
 
@@ -10,8 +10,9 @@ app.use(cors());
 
 app.get("/api/banners", async (req, res) => {
   try {
-
-    const [rows] = await pool.query("SELECT id, description, visible, endTime, createdAt, updatedAt FROM banner");
+    const [rows] = await pool.query(
+      "SELECT id, description, visible, endTime, createdAt, updatedAt FROM banner"
+    );
 
     res.status(200).json(rows);
   } catch (error) {
@@ -20,7 +21,6 @@ app.get("/api/banners", async (req, res) => {
   }
 });
 
-
 app.post("/api/create-banner", async (req, res) => {
   try {
     const { description, visible, endTime } = req.body;
@@ -28,13 +28,12 @@ app.post("/api/create-banner", async (req, res) => {
     const createdAt = new Date();
     const [result] = await pool.query(
       "INSERT INTO banner (id, description, visible, endTime, createdAt) VALUES (?, ?, ?, ?, ?)",
-      [id, description, visible, new Date(endTime), createdAt],
+      [id, description, visible, new Date(endTime), createdAt]
     );
-    console.log(result);
 
     res.status(201).json({
       message: "Banner created successfully",
-      id
+      id,
     });
   } catch (error) {
     console.log(error);
@@ -50,7 +49,7 @@ app.put("/api/update-banner/:id", async (req, res) => {
 
     const [result] = await pool.execute(
       "UPDATE banner SET description = ?, visible = ?, endTime = ?, updatedAt = ? WHERE id = ?",
-      [description, visible, endTime, updatedAt, id],
+      [description, visible, endTime, updatedAt, id]
     );
 
     if (result.affectedRows === 0) {
@@ -58,7 +57,7 @@ app.put("/api/update-banner/:id", async (req, res) => {
     }
 
     res.json({
-      message: "Banner updated successfully"
+      message: "Banner updated successfully",
     });
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
@@ -85,11 +84,11 @@ app.post("/api/banners/:id/toggle-visibility", async (req, res) => {
   try {
     const { id } = req.params;
     const updatedAt = new Date();
-    const {visible} = req.body;
+    const { visible } = req.body;
 
     const [result] = await pool.execute(
       "UPDATE banner SET visible = ?, updatedAt = ? WHERE id = ?",
-      [visible, updatedAt, id],
+      [visible, updatedAt, id]
     );
 
     if (result.affectedRows === 0) {
@@ -98,7 +97,7 @@ app.post("/api/banners/:id/toggle-visibility", async (req, res) => {
 
     res.json({
       message: "Banner visibility changed successfully",
-      visible
+      visible,
     });
   } catch (error) {
     console.error(error);
