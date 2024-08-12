@@ -19,17 +19,16 @@ app.get("/api/banners", async (req, res) => {
 });
 
 
-app.post("/api/banners", async (req, res) => {
+app.post("/api/create-banner", async (req, res) => {
   try {
     const { description, visible, endTime } = req.body;
     const id = uuidv4();
-    const link = `${BASE_URL}/banners/${id}`;
     const createdAt = new Date();
     console.log(process.env.DB_HOST);
 
     const [result] = await pool.query(
-      "INSERT INTO banner (id, description, visible, endTime, link, createdAt) VALUES (?, ?, ?, ?, ?, ?)",
-      [id, description, visible, new Date(endTime), link, createdAt],
+      "INSERT INTO banner (id, description, visible, endTime, createdAt) VALUES (?, ?, ?, ?, ?, ?)",
+      [id, description, visible, new Date(endTime), createdAt],
     );
     console.log(result);
 
@@ -44,7 +43,7 @@ app.post("/api/banners", async (req, res) => {
   }
 });
 
-app.put("/api/banners/:id", async (req, res) => {
+app.put("/api/update-banner/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { description, visible, endTime } = req.body;
@@ -68,7 +67,7 @@ app.put("/api/banners/:id", async (req, res) => {
   }
 });
 
-app.get("/api/banners/:id", async (req, res) => {
+app.get("/api/banner/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const [rows] = await pool.query("SELECT * FROM banner WHERE id = ?", [id]);
@@ -100,7 +99,6 @@ app.patch("/api/banners/:id/toggle-visibility", async (req, res) => {
 
     const newVisible = !currentStatus[0].visible;
 
-    // Update the visible status
     const [result] = await pool.execute(
       "UPDATE banner SET visible = ?, updatedAt = ? WHERE id = ?",
       [newVisible, updatedAt, id],

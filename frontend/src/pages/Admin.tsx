@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Table from '../components/Table';
 import Loader from '../components/Loader';
-
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 interface PortalItem {
   id: number;
   description: string;
@@ -18,7 +18,8 @@ const Admin = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/'); 
+        const response = await axios.get('${BASE_URL}/api/banners'); 
+        console.log(response.data);
         setItems(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
