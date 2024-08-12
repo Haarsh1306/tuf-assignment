@@ -7,7 +7,7 @@ const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Admin />} />
+        {/* <Route path="/" element={<Admin />} /> */}
         <Route path="/*" element={<Error message="404 - Not Found" />} />
         <Route path="/banner/:id" element={<Banner />} />
         <Route path="/admin" element={<Admin />} />
