@@ -5,7 +5,19 @@ const app = express();
 const pool = require("./db/db");
 app.use(express.json());
 
-const BASE_URL = "http://localhost:3000";
+app.use(cors());
+
+app.get("/api/banners", async (req, res) => {
+  try {
+    const [rows] = await pool.query("SELECT id, description, visible, endTime, link, createdAt, updatedAt FROM banner");
+
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 
 app.post("/api/banners", async (req, res) => {
   try {

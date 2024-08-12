@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import CountdownCard from '../components/CountdownCard';
-
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 const Banner = () => {
   const { id } = useParams(); 
   const [endTime, setEndTime] = useState(null);
@@ -17,7 +18,7 @@ const Banner = () => {
     console.log(id);
     const fetchEndTime = async () => {
       try {
-        const response = await axios.get(``); 
+        const response = await axios.get(`${BASE_URL}/events/${id}`); 
         setEndTime(new Date(response.data.endTime).getTime());
       } catch (error) {
         console.error('Error fetching end time:', error);
