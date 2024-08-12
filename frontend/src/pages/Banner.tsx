@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import CountdownCard from "../components/CountdownCard";
 import Loader from "../components/Loader";
+import { set } from "vue/types/umd";
+import Error from "./Error";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const Banner = () => {
   const { id } = useParams();
@@ -10,6 +12,7 @@ const Banner = () => {
   const [isLoading, setLoading] = useState(true);
   const [isActive, setActive] = useState(false);
   const [description, setDescription] = useState("");
+  const [error, setError] = useState(false);
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -28,6 +31,8 @@ const Banner = () => {
         setEndTime(new Date(response.data.endTime).getTime());
         setLoading(false);
       } catch (error) {
+        setError(true);
+        setLoading(false);
         console.error("Error fetching end time:", error);
       }
     };
@@ -65,6 +70,12 @@ const Banner = () => {
         <Loader size="lg" />
       </div>
     );
+  }
+
+  if(error) {
+    return (
+      <Error message="Error fetching banner" />
+    )
   }
   return (
     <div className="h-screen bg-black flex items-center justify-center">
