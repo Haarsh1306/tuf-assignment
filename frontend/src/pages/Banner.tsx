@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import CountdownCard from "../components/CountdownCard";
 import Loader from "../components/Loader";
-import { set } from "vue/types/umd";
 import Error from "./Error";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const Banner = () => {
