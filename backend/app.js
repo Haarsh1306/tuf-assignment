@@ -10,7 +10,8 @@ app.use(cors());
 
 app.get("/api/banners", async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT id, description, visible, endTime, link, createdAt, updatedAt FROM banner");
+
+    const [rows] = await pool.query("SELECT id, description, visible, endTime, createdAt, updatedAt FROM banner");
 
     res.status(200).json(rows);
   } catch (error) {
@@ -35,8 +36,7 @@ app.post("/api/create-banner", async (req, res) => {
 
     res.status(201).json({
       message: "Banner created successfully",
-      id,
-      link,
+      id
     });
   } catch (error) {
     console.log(error);
@@ -60,8 +60,7 @@ app.put("/api/update-banner/:id", async (req, res) => {
     }
 
     res.json({
-      message: "Banner updated successfully",
-      link: `${BASE_URL}/banners/${id}`,
+      message: "Banner updated successfully"
     });
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
@@ -111,8 +110,7 @@ app.patch("/api/banners/:id/toggle-visibility", async (req, res) => {
 
     res.json({
       message: "Banner visibility toggled successfully",
-      visible: newVisible,
-      link: `${BASE_URL}/banners/${id}`,
+      visible: newVisible
     });
   } catch (error) {
     console.error(error);
