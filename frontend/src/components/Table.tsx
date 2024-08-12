@@ -2,7 +2,7 @@ interface TableItem {
   id: number;
   description: string;
   endTime: string;
-  isActive: boolean;
+  visible: boolean;
   link: string;
 }
 
@@ -24,7 +24,9 @@ const formatEndTime = (endTime: string): string => {
   });
 };
 
+
 const Table = ({ items, onToggleActive, onUpdate }: TableProps) => {
+  console.log(items);
   return (
     <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
       <table className="min-w-full divide-y divide-gray-200">
@@ -84,12 +86,12 @@ const Table = ({ items, onToggleActive, onUpdate }: TableProps) => {
                 <button
                   onClick={() => onToggleActive(item.id)}
                   className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                    item.isActive
+                    item.visible
                       ? "bg-green-100 text-green-800"
                       : "bg-red-100 text-red-800"
                   }`}
                 >
-                  {item.isActive ? "Active" : "Inactive"}
+                  {item.visible ? "Active" : "Inactive"}
                 </button>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">

@@ -31,7 +31,8 @@ const Admin = () => {
     fetchData();
   }, []);
 
-  const toggleActive = (id: number) => {
+  const toggleActive = async (id: number) => {
+    const response = await axios.get(`${BASE_URL}/api/banners`); 
     setItems(items.map(item => 
       item.id === id ? { ...item, isActive: !item.isActive } : item
     ));
