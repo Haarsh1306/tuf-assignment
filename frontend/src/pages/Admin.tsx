@@ -3,16 +3,16 @@ import axios from "axios";
 import Table from "../components/Table";
 import Loader from "../components/Loader";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-interface PortalItem {
+
+interface TableItem {
   id: number;
   description: string;
   endTime: string;
   visible: boolean;
-  link: string;
 }
 
 const Admin = () => {
-  const [items, setItems] = useState<PortalItem[]>([]);
+  const [items, setItems] = useState<TableItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -45,8 +45,24 @@ const Admin = () => {
     }
   };
 
-  const handleUpdate = (id: number) => {
-    console.log(id);
+  const handleUpdate = async (updatedItem : TableItem) => {
+    try{
+      const response = await axios.put(`${BASE_URL}/api/update-banner/${updatedItem.id}`, updatedItem);
+      if(response.data.message){
+        setItems(
+          items.map((item) =>
+            item.id === updatedItem.id ? updatedItem : item
+          )
+        );
+
+        return true;
+      }
+      else return false;
+    }
+    catch(error){
+      console.error("Error updating item:", error);
+      return false;
+    }
   };
 
   return (
